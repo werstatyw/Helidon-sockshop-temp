@@ -33,7 +33,7 @@ spec:
         app: swagger
     spec:
       nodeSelector:
-        beta.kubernetes.io/os: linux
+        kubernetes.io/os: linux
       containers:
         - name: swagger
           image: swaggerapi/swagger-ui:latest

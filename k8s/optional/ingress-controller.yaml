@@ -220,7 +220,7 @@ spec:
       terminationGracePeriodSeconds: 300
       serviceAccountName: nginx-ingress-serviceaccount
       nodeSelector:
-        beta.kubernetes.io/os: linux
+        kubernetes.io/os: linux
       containers:
         - name: nginx-ingress-controller
           image: quay.io/kubernetes-ingress-controller/nginx-ingress-controller:master

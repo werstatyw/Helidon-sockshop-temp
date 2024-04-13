@@ -22,7 +22,7 @@ spec:
         name: carts-db
     spec:
       nodeSelector:
-        beta.kubernetes.io/os: linux
+        kubernetes.io/os: linux
       containers:
       - name: carts-db
         image: mysql:8.0.20

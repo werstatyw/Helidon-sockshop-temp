@@ -50,7 +50,7 @@ spec:
         version: v1
     spec:
       nodeSelector:
-        beta.kubernetes.io/os: linux
+        kubernetes.io/os: linux
       containers:
         - name: payment
           image: ghcr.io/helidon-sockshop/payment-core:2.2.0
