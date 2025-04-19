@@ -16,26 +16,26 @@ jobs:
       contents: read # for actions/checkout to fetch code
       security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
       actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
-    name: Build
+    name: Build and Scan
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Build an image from Dockerfile
+      - name: Extract image names from k8s/core manifests
+        id: extract-images
         run: |
-          docker build -t docker.io/my-organization/my-app:${{ github.sha }} .
+          images=$(grep -rhoP 'image:\s*\K\S+' k8s/core | sort -u)
+          echo "images=$images" >> $GITHUB_ENV
 
-      - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@7b7aa264d83dc58691451798b4d117d53d21edfe
-        with:
-          image-ref: 'docker.io/my-organization/my-app:${{ github.sha }}'
-          format: 'template'
-          template: '@/contrib/sarif.tpl'
-          output: 'trivy-results.sarif'
-          severity: 'CRITICAL,HIGH'
+      - name: Scan images with Trivy
+        run: |
+          for image in $images; do
+            echo "Scanning $image"
+            trivy image --severity CRITICAL,HIGH --format sarif --output trivy-results-${image//\//-}.sarif $image
+          done
 
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: 'trivy-results.sarif'
+          sarif_file: 'trivy-results-*.sarif'
