@@ -26,11 +26,16 @@ jobs:
         id: extract-images
         run: |
           images=$(grep -rhoP 'image:\s*\K\S+' k8s/core | sort -u)
-          echo "images=$images" >> $GITHUB_ENV
+          echo "Extracted images:"
+          echo "$images"
+          echo "$images" | while read -r image; do
+            echo "IMAGE_$((i++))=$image" >> $GITHUB_ENV
+          done
 
       - name: Scan images with Trivy
         run: |
-          for image in $images; do
+          for var in $(env | grep ^IMAGE_); do
+            image=${var#*=}
             echo "Scanning $image"
             trivy image --severity CRITICAL,HIGH --format sarif --output trivy-results-${image//\//-}.sarif $image
           done
