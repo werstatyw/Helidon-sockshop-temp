@@ -32,7 +32,7 @@ jobs:
         run: |
           echo "let's try first step manually..."
 
-      - name: Run Trivy vulnerability scanner
+      - name: Run Trivy vulnerability scanner for cart
         uses: aquasecurity/trivy-action@7b7aa264d83dc58691451798b4d117d53d21edfe
         with:
           image-ref: 'ghcr.io/helidon-sockshop/carts-core:2.2.0'
@@ -41,7 +41,79 @@ jobs:
           output: 'trivy-results-carts-core.sarif'
           severity: 'CRITICAL,HIGH'
 
-      - name: Upload Trivy scan results to GitHub Security tab
+      - name: Upload Trivy scan results to GitHub Security tab for carts-core
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: 'trivy-results-carts-core.sarif'
+
+      - name: Run Trivy vulnerability scanner for catalog
+        uses: aquasecurity/trivy-action@7b7aa264d83dc58691451798b4d117d53d21edfe
+        with:
+          image-ref: 'ghcr.io/helidon-sockshop/catalog-core:2.2.0'
+          format: 'template'
+          template: '@/contrib/sarif.tpl'
+          output: 'trivy-results-catalog.sarif'
+          severity: 'CRITICAL,HIGH'
+      
+      - name: Upload Trivy scan results to GitHub Security tab for catalog-core
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: 'trivy-results-catalog.sarif'
+
+      - name: Run Trivy vulnerability scanner for orders
+        uses: aquasecurity/trivy-action@7b7aa264d83dc58691451798b4d117d53d21edfe
+        with:
+          image-ref: 'ghcr.io/helidon-sockshop/orders-core:2.2.0'
+          format: 'template'
+          template: '@/contrib/sarif.tpl'
+          output: 'trivy-results-orders-core.sarif'
+          severity: 'CRITICAL,HIGH'
+
+      - name: Upload Trivy scan results to GitHub Security tab for orders-core
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: 'trivy-results-orders-core.sarif'
+
+      - name: Run Trivy vulnerability scanner for payment
+        uses: aquasecurity/trivy-action@7b7aa264d83dc58691451798b4d117d53d21edfe
+        with:
+          image-ref: 'ghcr.io/helidon-sockshop/payment-core:2.2.0'
+          format: 'template'
+          template: '@/contrib/sarif.tpl'
+          output: 'trivy-results-payment-core.sarif'
+          severity: 'CRITICAL,HIGH'
+
+      - name: Upload Trivy scan results to GitHub Security tab for payment-core
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: 'trivy-results-payment-core.sarif'
+
+      - name: Run Trivy vulnerability scanner for shipping  
+        uses: aquasecurity/trivy-action@7b7aa264d83dc58691451798b4d117d53d21edfe
+        with:
+          image-ref: 'ghcr.io/helidon-sockshop/shipping-core:2.2.0'
+          format: 'template'
+          template: '@/contrib/sarif.tpl'
+          output: 'trivy-results-shipping-core.sarif'
+          severity: 'CRITICAL,HIGH'
+
+      - name: Upload Trivy scan results to GitHub Security tab for shipping-core
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: 'trivy-results-shipping-core.sarif'
+
+      - name: Run Trivy vulnerability scanner for user  
+        uses: aquasecurity/trivy-action@7b7aa264d83dc58691451798b4d117d53d21edfe
+        with:
+          image-ref: 'ghcr.io/helidon-sockshop/user-core:2.2.0'
+          format: 'template'
+          template: '@/contrib/sarif.tpl'
+          output: 'trivy-results-user-core.sarif'
+          severity: 'CRITICAL,HIGH'
+          
+      - name: Upload Trivy scan results to GitHub Security tab for user-core
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: 'trivy-results-user-core.sarif'
+
+      
