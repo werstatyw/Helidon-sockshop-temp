@@ -1,4 +1,4 @@
-name: trivy-user
+name: trivy-users
 
 on:
   push:
@@ -25,7 +25,7 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@7b7aa264d83dc58691451798b4d117d53d21edfe
         with:
-          image-ref: 'ghcr.io/helidon-sockshop/user-core:2.2.0'
+          image-ref: 'ghcr.io/helidon-sockshop/users-core:2.2.0'
           format: 'sarif'
           output: 'trivy-results-user.sarif'
           severity: 'CRITICAL,HIGH'
@@ -33,4 +33,4 @@ jobs:
       - name: Upload Trivy scan results
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: 'trivy-results-user.sarif'
+          sarif_file: 'trivy-results-users.sarif'
